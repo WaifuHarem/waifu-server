@@ -1,0 +1,28 @@
+[
+  null,
+  {
+
+  },
+  {
+
+  },
+  {
+    "date": "number",
+    "player": "string",
+    "title": "string",
+    "artist": "string",
+    "creator": "string",
+    "combo": "number",
+    "w0": "number",
+    "w1": "number",
+    "w2": "number",
+    "w3": "number",
+    "w4": "number",
+    "w5": "number",
+    "equiv": "number",
+    "raw": "number"
+  },
+  {
+
+  }
+]

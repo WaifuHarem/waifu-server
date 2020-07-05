@@ -1,0 +1,30 @@
+Below is a quick runthrough of the way scoreData objects are expected to be structured.
+Any score that doesn't match will be rejected or quarantined.
+
+Etterna
+
+-- TODO
+
+osu!
+
+-- TODO
+
+FFR
+
+{
+    "game": 3, // Game Id for FFR scores
+    "date": int, // Date on scorepost in Time-since-epoch format
+    "player": string, // Username of the player
+    "title": string, // Chart title
+    "artist": string, // Song Artist
+    "creator": string, // Name of charter
+    "combo": int, // Max Combo value
+    "w0": int, // Number of Amazings
+    "w1": int, // Number of perfects
+    "w2": int, // Number of Goods
+    "w3": int, // Number of Averages
+    "w4": int, // Number of Misses
+    "w5": int, // Number of Boos
+    "equiv": float, // AAA Equivalency value
+    "raw": float // Raw Goods value
+}
