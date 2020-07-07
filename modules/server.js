@@ -32,34 +32,32 @@ class Task extends require("events") {
 
 // Setup Server
 
-const net = require("net");
+const http = require("http");
 
-let Socket = null;
+function listener(req, res) {
+    req.on("data", data => {
+        data = data.toString();
 
-function listener(data) {
-    data = data.toString();
-
-    if (debug) {
-        console.log("received data");
-        console.log(data);
-    }
-
-    let json = JSON.parse(data);
-    json["ip"] = Socket.remoteAddress.replace(/::ffff:/, ""); //Attach IP to Request obj
-
-    let task = new Task(json);
-    task.then = reply => {
-        if (Socket) {
-            Socket.write(JSON.stringify(reply.data));
-        } else {
-            console.error(`Task ${task.id} completed with no socket to reply to.`);
+        if (debug) {
+            console.log("received data");
+            console.log(data);
         }
-        task.emit("destroy");
-    };
-    task.on("destroy", () => tasks.delete(task.id));
-    tasks.set(task.id, task);
 
-    process.send({id: task.id, data: task.data});
+        let json = JSON.parse(data);
+        json["ip"] = req.remoteAddress.replace(/::ffff:/, ""); //Attach IP to Request obj
+
+        let task = new Task(Date.now(), data, {});
+        console.log(`task ${task.id} created`);
+        task.then = reply => {
+            res.writeHead(200, task.header);
+            res.end(JSON.stringify(reply.data));
+            console.log(`task ${task.id} destroyed`);
+            task.emit("destroy");
+        };
+        task.on("destroy", () => tasks.delete(task.id));
+        tasks.set(task.id, task);
+        process.send({id: task.id, data: task.data});
+    });
 }
 
 process.on("message", (reply) => {
@@ -76,39 +74,9 @@ function kill(sock) {
     }
 }
 
-const server = net.createServer(socket => {
-    console.log("Connection received.");
-    if (!socket) {
-        console.log("Dead socket, aborting");
-        return;
-    } else if (!socket.remoteAddress) {
-        console.log("Broken socket, killing");
-        kill(socket);
-        return;
-    } else if (Socket) {
-        // Already have an established connection
-        console.log("Existing Socket already found.");
-        if (Socket.remoteAddress !== socket.remoteAddress) {
-            kill(socket);
-            return;
-        }
-        console.log("Same remote address, replacing");
-    }
+const server = http.createServer(listener);
 
-    socket.on("data", listener);
-
-    socket.on("close", () => {
-        Socket = null;
-        console.log("Socket Closed, free to accept a new socket");
-    });
-
-    Socket = socket;
-    console.log("Socket established");
-});
-
-server.on("error", err => {
-    throw err;
-});
+server.on("error", err => throw err);
 
 server.listen(8000);
-console.log("TCP server listening on port 8000");
+console.log("HTTP server listening on port 8000");

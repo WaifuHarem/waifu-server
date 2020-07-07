@@ -1,5 +1,5 @@
 "use strict";
-
+/*
 const mysql = require("mysql");
 
 class Database {
@@ -51,3 +51,4 @@ class Database {
 };
 
 module.exports = Database;
+*/
