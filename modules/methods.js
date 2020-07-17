@@ -2,7 +2,10 @@
 
 // Edit this class to add more parser methods
 
-const db = require("./database.js");
+const db = (async function() {
+    let out = await require("./database.js")();
+    global.dbReady = true;
+})();
 const Data = require("./data");
 
 // All methods ABSOLUTELY must return a promise that resolves to an object containing:

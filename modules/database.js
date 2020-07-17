@@ -1,12 +1,46 @@
 "use strict";
-/*
+
 const mysql = require("mysql");
+
+const prod = Boolean(global.prod);
 
 class Database {
     constructor() {} // Static
 
+    static initDB() {
+        const initscript = (
+            function() {
+                const path = require("path");
+                const fs = require("fs");
+                let data;
+                try {
+                    data = fs.readFileSync(path.join(process.cwd(), "data", "init_" + (prod ? "prod" : "test") + ".sql"));
+                } catch (e) {
+                    data = "";
+                    console.error("Unable to load initdb sql scripts. May be fatal");
+                    console.error(e);
+                }
+                return data;
+            }
+        )();
+
+        if (!initscript) return false;
+
+        return new Promise((resolve, reject) => {
+            Database.query(initscript, err => {
+                console.log("Initscript finished");
+                if (err)
+                    return reject(err);
+                resolve(true);
+            });
+        }).catch((err) => {
+            Crash(err);
+            return false;
+        })
+    }
+
     static query(sql, callback) {
-        let connection = mysql.createConnection(config.connection);
+        let connection = mysql.createConnection(config.connection[Number(prod)]);
 
         connection.on("error", function(err) {
             console.error("Mysql Err", err);
@@ -50,5 +84,11 @@ class Database {
     }
 };
 
-module.exports = Database;
-*/
+module.exports = function() {
+    return new Promise(async (resolve, reject) => {
+        let result = await Database.initDB();
+        if (!result)
+            Crash("Unable to Startup database module. Fatal", false, false, true);
+        return Database;
+    });
+};

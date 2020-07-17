@@ -10,14 +10,6 @@ try {
     ips = "";
 }
 
-try {
-    groups = require("./groups.json");
-} catch (err) {
-    console.log("unable to open groups, writing new");
-    groups = require("./groups-default.json");
-    fs.writeFileSync("./groups.json", JSON.stringify(data));
-}
-
 const config = {
     watchconfig: true,
     keys: [
@@ -32,7 +24,7 @@ const config = {
     ],
     auth: [
         {
-            name: "Unregistered",
+            name: "Unregistered"
         },
         {
             name: "Registered"
@@ -42,7 +34,14 @@ const config = {
         }
     ],
     supportedIPs: ips || [],
-    groups: groups
+    connection: [
+        {
+            // Test DB
+        },
+        {
+            // Prod DB
+        }
+    ]
 };
 
 module.exports = config;

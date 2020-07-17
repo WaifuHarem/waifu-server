@@ -26,11 +26,9 @@ if (config.watchconfig) {
     });
 }
 
-// Load Database Manager
-const database = require("/modules/database.js");
-
 // Load Parser
-const parser = require("./modules/parser.js");
+global.dbReady = false;
+const Parser = require("./modules/parser.js");
 
 // Mini Process Manager. Mostly pointless but in place in the event the db is moved to a different process.
 const child_process = require("child_process");
@@ -55,12 +53,16 @@ class ProcessWrapper {
     }
 }
 
-// Spawn Server
-processes.set(processes.size, new ProcessWrapper(
-    processes.size, // id - probably dumb
-    child_process.fork("./modules/server", [], {cwd: __dirname}), // process
-    parser.receive.bind(this) // receive method
-));
+// Launch server when Database is ready
+let wait = setInterval(() => {
+    if (!global.dbReady) return; // Dont spawn a server process until the database is ready
+    wait.clearInterval();
+    processes.set(processes.size, new ProcessWrapper(
+        processes.size, // id - probably dumb
+        child_process.fork("./modules/server", [], {cwd: __dirname}), // process
+        Parser.receive.bind(this) // receive method
+    ));
+});
 
 
 

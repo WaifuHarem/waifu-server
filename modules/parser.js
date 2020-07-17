@@ -21,7 +21,7 @@ class Parser {
             if (!data.opcode)
                 return resolve({code: 0}); // No-op
 
-            if (!Methods.VerifyPermission.call(this, data.userid, data.opcode))
+            if (await !Methods.VerifyPermission.call(this, data.userid, data.opcode))
                 return resolve({code: 3}); // Unauthorized Request
 
             let reply = null;
@@ -63,4 +63,4 @@ class Parser {
     }
 }
 
-module.exports = new Parser();
+module.exports = Parser;
