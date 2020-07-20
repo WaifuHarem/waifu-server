@@ -35,7 +35,7 @@ function wrapper() {
             console.error(err);
         });
 
-        connection.connect(function(err) {
+        connection.connect((err) => {
             if (err) {
                 connection.destroy();
                 console.error(err);

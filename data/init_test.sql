@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS Users(
     NameEtterna TEXT,
     NameQuaver TEXT,
     NameFFR TEXT,
+    NameRobeats TEXT,
     Group SMALLINT NOT NULL DEFAULT 1,
     Regdate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
