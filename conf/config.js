@@ -1,5 +1,5 @@
 const fs = require("fs");
-let ips, connections = [];
+let ips, connection = [];
 
 try {
     ips = fs.readFileSync("./ips.csv");
@@ -11,12 +11,12 @@ try {
 }
 
 try {
-    connections.push(
+    connection.push(
         JSON.stringify(
             fs.readFileSync("dbtest.json", "utf8")
         )
     );
-    connections.push(
+    connection.push(
         JSON.stringify(
             fs.readFileSync("dbprod.json", "utf8")
         )
@@ -50,7 +50,7 @@ const config = {
         }
     ],
     supportedIPs: ips || [],
-    connection: connections,
+    connection,
     testlogs: "logs/tests/"
 };
 

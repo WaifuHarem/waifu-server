@@ -20,7 +20,7 @@ global.pLog = plog;
 process.on("uncaughtException", err => crash(err, "uncaughtException"), true);
 
 // Read Config
-global.config = require.resolve("../conf/config.js");
+global.config = require("../conf/config.js");
 if (config.watchconfig) {
     const fs = require("fs");
     let configPath = require.resolve("../conf/config.js");
@@ -37,3 +37,5 @@ if (config.watchconfig) {
         }
     });
 }
+
+console.log("Global tools loaded");
