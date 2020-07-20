@@ -28,7 +28,7 @@ function wrapper() {
         )();
         if (!query)
             process.exit();
-        let connection = mysql.createConnection(con);
+        let connection = mysql.createConnection(config.connection[Number(prod)]);
 
         connection.on("error", function(err) {
             connection.destroy();
