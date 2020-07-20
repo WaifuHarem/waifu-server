@@ -46,12 +46,13 @@ function wrapper() {
                 if (err) {
                     console.error("Unable to initialize MySQL Database. Fatal.");
                     console.error(err);
+                    connection.destroy();
                     process.exit();
                 }
                 console.log("MySQL Database Initialized.");
                 fs.writeFileSync(path.join(process.cwd(), `${mode}dbready`), "");
+                connection.end();
             });
-            connection.end();
         });
     } catch (e) {
         console.error(e);
