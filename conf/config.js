@@ -2,23 +2,23 @@ const fs = require("fs");
 let ips, connection = [];
 
 try {
-    ips = fs.readFileSync("./ips.csv");
+    ips = fs.readFileSync("./conf/ips.csv");
     ips = ips.split(",");
 } catch (err) {
     console.log("unable to open ips.csv, writing new");
-    fs.writeFileSync("./ips.csv", "0.0.0.0,localhost");
+    fs.writeFileSync("./conf/ips.csv", "0.0.0.0,localhost");
     ips = "";
 }
 
 try {
     connection.push(
         JSON.stringify(
-            fs.readFileSync("dbtest.json", "utf8")
+            fs.readFileSync("./conf/dbtest.json", "utf8")
         )
     );
     connection.push(
         JSON.stringify(
-            fs.readFileSync("dbprod.json", "utf8")
+            fs.readFileSync("./conf/dbprod.json", "utf8")
         )
     );
 } catch (err) {
