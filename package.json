@@ -12,6 +12,7 @@
   "scripts": {
     "start": "node main.js",
     "production": "node main.js prod",
+    "update": "bash ./scripts/update.sh",
 
     "testinit": "node ./scripts/initdb.js",
     "prodinit": "node ./scripts/initdb.js prod",

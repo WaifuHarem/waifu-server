@@ -17,7 +17,7 @@ function wrapper() {
             function() {
                 let data;
                 try {
-                    data = fs.readFileSync(path.join(process.cwd(), "data", `init_${mode}.sql`));
+                    data = fs.readFileSync(path.resolve("../", "data", `init_${mode}.sql`));
                 } catch (e) {
                     data = "";
                     console.error("Unable to load initdb sql scripts. Fatal.");
