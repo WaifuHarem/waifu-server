@@ -1,75 +1,15 @@
+
+// Waifu-board startup file
+// Runs global script, spawns a server, and exposes parser to server
+// 2. lines. of. code. does. all. the. things.
+// Layla A.
+
 "use strict";
 
-// Start logger
-const { crash, log, plog } = require("./modules/logger");
-global.Crash = crash;
-global.Log = log;
-global.pLog = plog;
-process.on("uncaughtException", err => crash(err, "uncaughtException"), true);
-
-// Read Config
-global.config = require.resolve("./conf/config.js");
-if (config.watchconfig) {
-    const fs = require("fs");
-    let configPath = require.resolve("./conf/config.js");
-    fs.watchFile(configPath, (curr, prev) => {
-        if (curr.mtime <= prev.mtime) return;
-        try {
-            delete require.cache[configPath];
-            global.config = require(configPath);
-            console.log("Reloaded login server settings");
-        } catch (e) {
-            console.error("Error reloading server settings. config.watchconfig disabled until restart");
-            console.error(e.stack);
-            fs.unwatchFile(configPath);
-        }
-    });
-}
-
-// Load Parser
-global.dbReady = false;
-const Parser = require("./modules/parser.js");
-
-// Mini Process Manager. Mostly pointless but in place in the event the db is moved to a different process.
-const child_process = require("child_process");
-const processes = new Map();
-
-// Process Wrapper - TODO add a server health query
-class ProcessWrapper {
-    constructor(id, subProcess, receive) {
-        this.id = id;
-        this.process = subProcess;
-        this.receive = receive;
-
-        this.process.on("message", async function(task) {
-            task.data = await this.receive(task.data);
-            this.process.send(task);
-        }.bind(this));
-    }
-
-    health() {
-        // TODO - track concurrent and recent tasks
-        return `Process Wrapper ${this.id}`
-    }
-}
-
-// Launch server when Database is ready
-let wait = setInterval(() => {
-    if (!global.dbReady) return; // Dont spawn a server process until the database is ready
-    wait.clearInterval();
-    processes.set(processes.size, new ProcessWrapper(
-        processes.size, // id - probably dumb
-        child_process.fork("./modules/server", [], {cwd: __dirname}), // process
-        Parser.receive.bind(this) // receive method
-    ));
-});
-
-
-
-/*
-global.context = this; //For Eval - Bad Practice, I know
-
-global.toId = function(str) {
-    return ('' + str).toLowerCase().replace(/[^a-z0-9]+/g, '');
-};
-*/
+require("./modules/global.js");
+require("./modules/process.js").Create(
+    "./modules/server",
+    [],
+    {cwd: __dirname},
+    require("./modules/parser.js").bind(this)
+);

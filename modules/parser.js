@@ -12,31 +12,6 @@ const Methods = require("./methods");
 class Parser {
     constructor() {} // Static
 
-    static receive(data) {
-        return new Promise(async function(resolve, reject) {
-            let err_code = Methods.VerifyData(data);
-            if (err_code)
-                return reject(err_code);
-
-            if (!data.opcode)
-                return resolve({code: 0}); // No-op
-
-            if (await !Methods.VerifyPermission.call(this, data.userid, data.opcode))
-                return resolve({code: 3}); // Unauthorized Request
-
-            let reply = null;
-            switch(data.opcode) {
-                case 1: reply = await Parser.AddScore(data.userid, data.data || null); break;
-
-                default: reply = {code: 0};
-            }
-            return resolve(reply);
-        }).catch(err => {
-            Crash(err, "Received data that cannot be processed.");
-            return {code: err};
-        });
-    }
-
     static AddScore(userid, scoreData) {
         return new Promise(async function(resolve, reject) {
             if (!scoreData || typeof scoreData !== "object")
@@ -63,4 +38,30 @@ class Parser {
     }
 }
 
-module.exports = Parser;
+// Outward-facing receive function for the parser
+function receive(data) {
+    return new Promise(async function(resolve, reject) {
+        let err_code = Methods.VerifyData(data);
+        if (err_code)
+            return reject(err_code);
+
+        if (!data.opcode)
+            return resolve({code: 0}); // No-op
+
+        if (await !Methods.VerifyPermission.call(this, data.userid, data.opcode))
+            return resolve({code: 3}); // Unauthorized Request
+
+        let reply = null;
+        switch(data.opcode) {
+            case 1: reply = await Parser.AddScore(data.userid, data.data || null); break;
+
+            default: reply = {code: 0};
+        }
+        return resolve(reply);
+    }).catch(err => {
+        Crash(err, "Received data that cannot be processed.");
+        return {code: err};
+    });
+}
+
+module.exports = receive;

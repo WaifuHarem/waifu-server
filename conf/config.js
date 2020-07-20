@@ -1,5 +1,5 @@
 const fs = require("fs");
-let ips, groups;
+let ips;
 
 try {
     ips = fs.readFileSync("./ips.csv");
@@ -41,7 +41,8 @@ const config = {
         {
             // Prod DB
         }
-    ]
+    ],
+    testlogs: "logs/tests/"
 };
 
 module.exports = config;

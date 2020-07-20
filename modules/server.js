@@ -3,7 +3,10 @@
 // Creates an HTTP server for a parent process and sends messages upward
 // - Layla
 
-const debug = true;
+"use strict";
+
+require("./global.js");
+const prod = Boolean(global.prod);
 
 // Task class, for keeping requests organized
 
@@ -38,7 +41,7 @@ function listener(req, res) {
     req.on("data", data => {
         data = data.toString();
 
-        if (debug) {
+        if (!prod) {
             console.log("received data");
             console.log(data);
         }
@@ -65,18 +68,16 @@ process.on("message", (reply) => {
         tasks.get(reply.id).then(reply);
 });
 
-function kill(sock) {
-    try {
-        sock.end();
-    } catch (e) {
-        console.error("error killing socket");
-        console.error(e);
-    }
-}
-
 const server = http.createServer(listener);
 
 server.on("error", err => throw err);
-
 server.listen(8000);
-console.log("HTTP server listening on port 8000");
+console.log(`HTTP server in ${prod ? "production" : "test"} mode listening on port 8000`);
+
+if (require.main !== module) {
+    module.exports = {
+        server,
+        listener,
+        tasks
+    };
+}
