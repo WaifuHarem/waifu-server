@@ -1,5 +1,5 @@
 const fs = require("fs");
-let ips;
+let ips, connections = [];
 
 try {
     ips = fs.readFileSync("./ips.csv");
@@ -8,6 +8,22 @@ try {
     console.log("unable to open ips.csv, writing new");
     fs.writeFileSync("./ips.csv", "0.0.0.0,localhost");
     ips = "";
+}
+
+try {
+    connections.push(
+        JSON.stringify(
+            fs.readFileSync("dbtest.json", "utf8")
+        )
+    );
+    connections.push(
+        JSON.stringify(
+            fs.readFileSync("dbprod.json", "utf8")
+        )
+    );
+} catch (err) {
+    console.error("unable to open to initialize database connection options, exiting...");
+    process.exit();
 }
 
 const config = {
@@ -34,14 +50,7 @@ const config = {
         }
     ],
     supportedIPs: ips || [],
-    connection: [
-        {
-            // Test DB
-        },
-        {
-            // Prod DB
-        }
-    ],
+    connection: connections,
     testlogs: "logs/tests/"
 };
 
