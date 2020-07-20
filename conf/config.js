@@ -10,22 +10,6 @@ try {
     ips = "";
 }
 
-try {
-    connection.push(
-        JSON.stringify(
-            fs.readFileSync("./conf/dbtest.json", "utf8")
-        )
-    );
-    connection.push(
-        JSON.stringify(
-            fs.readFileSync("./conf/dbprod.json", "utf8")
-        )
-    );
-} catch (err) {
-    console.error("unable to open to initialize database connection options, exiting...");
-    process.exit();
-}
-
 const config = {
     watchconfig: true,
     keys: [
@@ -50,7 +34,7 @@ const config = {
         }
     ],
     supportedIPs: ips || [],
-    connection,
+    connection: [require("./dbtest.json"), require("./dbprod.json")],
     testlogs: "logs/tests/"
 };
 
