@@ -35,24 +35,16 @@ function wrapper() {
             console.error(err);
         });
 
-        connection.connect((err) => {
+        connection.query(query, (err) => {
             if (err) {
-                connection.destroy();
+                console.error("Unable to initialize MySQL Database. Fatal.");
                 console.error(err);
+                connection.destroy();
+                process.exit();
             }
-            if (!prod)
-                console.log(`Query: ${query}`);
-            connection.query(query, (err) => {
-                if (err) {
-                    console.error("Unable to initialize MySQL Database. Fatal.");
-                    console.error(err);
-                    connection.destroy();
-                    process.exit();
-                }
-                console.log("MySQL Database Initialized.");
-                fs.writeFileSync(path.join(process.cwd(), `${mode}dbready`), "");
-                connection.end();
-            });
+            console.log("MySQL Database Initialized.");
+            fs.writeFileSync(path.join(process.cwd(), `${mode}dbready`), "");
+            connection.end();
         });
     } catch (e) {
         console.error(e);
