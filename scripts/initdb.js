@@ -40,6 +40,8 @@ function wrapper() {
                 connection.destroy();
                 console.error(err);
             }
+            if (!prod)
+                console.log(`Query: ${query}`);
             connection.query(query, (err) => {
                 if (err) {
                     console.error("Unable to initialize MySQL Database. Fatal.");
