@@ -42,7 +42,7 @@ const config = {
     ],
     supportedIPs: ips || [],
     connection: [require("./dbtest.json"), require("./dbprod.json")],
-    testlogs: "logs/tests/"
+    testlogs: "waifu-server/logs/tests/"
 };
 
 module.exports = config;
