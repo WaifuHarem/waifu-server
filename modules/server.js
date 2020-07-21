@@ -70,7 +70,7 @@ process.on("message", (reply) => {
 
 const server = http.createServer(listener);
 
-server.on("error", err => throw err);
+server.on("error", err => {throw err});
 server.listen(8000);
 console.log(`HTTP server in ${prod ? "production" : "test"} mode listening on port 8000`);
 
