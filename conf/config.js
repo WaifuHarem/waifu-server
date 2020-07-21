@@ -1,3 +1,10 @@
+
+// Config Global Module
+// Holds global settings used across the server.
+// - Layla
+
+"use strict";
+
 const fs = require("fs");
 let ips, connection = [];
 

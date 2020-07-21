@@ -38,4 +38,6 @@ if (config.watchconfig) {
     });
 }
 
+global.loaded = true;
+
 console.log("Global tools loaded");

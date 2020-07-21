@@ -1,18 +1,12 @@
+
+// Methods Static Class
+// Utility functions for Parser.js
+// - Layla
+
 "use strict";
 
-// Edit this class to add more parser methods
-
-const db = (async function() {
-    let out = await require("./database.js")();
-    global.dbReady = true;
-})();
+require("./database.js");
 const Data = require("./data");
-
-// All methods ABSOLUTELY must return a promise that resolves to an object containing:
-// {
-//      code: int
-//      data: json-string (optional)
-// }
 
 class Methods {
     constructor() {} // Static
@@ -30,9 +24,12 @@ class Methods {
     }
 
     static VerifyPermission(userid, opcode = 0) {
+        return true;
+        /* TODO Rewrite to use Database groups instead of config
         if (!Boolean(config.groups[userid]))
             return false;
         return config.keys[opcode] <= config.groups[userid].group;
+        */
     }
 
     static VerifyScoreIntegrity(scoreData) {

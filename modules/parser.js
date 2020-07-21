@@ -1,3 +1,8 @@
+
+// Parser Module
+// Receives messages from server for processing and sends a reply back
+// - Layla
+
 "use strict";
 
 const Methods = require("./methods");
@@ -9,7 +14,13 @@ const Methods = require("./methods");
 // 3 = Unauthorized Request
 // 4 = Invalid Score
 
-class Parser {
+// All Operations ABSOLUTELY must return a promise that resolves to an object containing:
+// {
+//      code: int
+//      data: json-string (optional)
+// }
+
+class Operations {
     constructor() {} // Static
 
     static AddScore(userid, scoreData) {
@@ -38,7 +49,7 @@ class Parser {
     }
 }
 
-// Outward-facing receive function for the parser
+// Outward-facing Parser function
 function receive(data) {
     return new Promise(async function(resolve, reject) {
         let err_code = Methods.VerifyData(data);
@@ -53,7 +64,7 @@ function receive(data) {
 
         let reply = null;
         switch(data.opcode) {
-            case 1: reply = await Parser.AddScore(data.userid, data.data || null); break;
+            case 1: reply = await Operations.AddScore(data.userid, data.data || null); break;
 
             default: reply = {code: 0};
         }
