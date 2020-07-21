@@ -36,6 +36,7 @@ class Test {
         }
         console.log(`Total errors: ${errors}`);
         this.log(errors);
+        process.exit(0);
     }
 
     log(errors) {
@@ -55,7 +56,6 @@ class Test {
         file += "End of Test Report";
         let path = require("path").resolve("../", config.testlogs, `${this.name}_${time}.log`);
         require("fs").writeFileSync(path, file);
-
     }
 }
 
