@@ -12,6 +12,10 @@ try {
 } catch (err) {}
 
 try {
+    fs.mkdirSync("./logs/tests");
+} catch (err) {}
+
+try {
     fs.writeFileSync("./logs/crash.log", "");
 } catch (err) {}
 

@@ -108,8 +108,8 @@ class Task extends require("events") {
 
 if (require.main === module) {
     const test = new Test("Test Wrapper");
-    test.add(Crash, {}, "non-notif crash", console.trace(), false);
-    test.add(Crash, {}, "notif crash", console.trace(), true);
+    test.add(Crash, {}, "non-notif crash", new Error().stack, false);
+    test.add(Crash, {}, "notif crash", new Error().stack, true);
     test.add(Log, {}, "testlog-nonwritten");
     test.add(Log, {}, "testlog-written", true);
     // TODO Test pLog
