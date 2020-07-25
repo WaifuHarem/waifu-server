@@ -4,7 +4,7 @@
 
 Waifu server operates with an HTTP server bound to localhost on listening for requests on port 8000. Requests must maintain the following schema as defined below:
 
-```$xslt
+```
 {
     "opcode": int,
     "userid": int,
@@ -17,7 +17,7 @@ __opcode:__
 
 Opcode acts as a means of telling the server what to do with the request data. Below is a key of opcode functions.
 
-```$xslt
+```
     0 = no-op
     1 = addscore
     2 = remove score
@@ -36,7 +36,7 @@ __auth:__
 
 Auth functions as an optional override to the backend permissions table. Auth values can exist in 3 states:
 
-```$xslt
+```
     0 = Not Registered
     1 = Registered
     2 = Administrator
@@ -44,7 +44,7 @@ Auth functions as an optional override to the backend permissions table. Auth va
 
 And the opcode table is bound to the following permissions:
 
-```$xslt
+```
     0 = 0
     1 = 1 // Must have an auth override of 2 for manual submissions
     2 = 2
@@ -59,7 +59,7 @@ And the opcode table is bound to the following permissions:
 
 Server responses will be in JSON format and contain the following information
 
-```$xslt
+```
 {
     "code": 0 or [error code],
     "data": null or [request data],
@@ -71,7 +71,7 @@ __code:__
 
 Response codes indicate the status of the server transaction, their meanings are defined as such:
 
-```$xslt
+```
     0 = Success
     1 = Malformed Request
     2 = Invalid Request
@@ -84,7 +84,7 @@ __notif:__
 
 Notifications, if present on the server, will be stored in an array along with the request data. Notifications are expected to be PMd to Administrators on the client side. The current list of Administrators to receive notifications:
 
-```$xslt
+```
     abraker
     Lights
 ```
@@ -95,7 +95,7 @@ __gamecodes:__
 
 Gamecodes are an integer that must be resolved from the name of the game being referred to before being sent to the server. Game codes are defined as such:
 
-```$xslt
+```
     0 = NA / All
     1 = Etterna
     2 = osu!mania
