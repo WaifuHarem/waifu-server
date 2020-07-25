@@ -85,6 +85,10 @@ class Database {
             return null;
         });
     }
+
+    reset() {
+        // TODO
+    }
 };
 
 global.Database = new Database();

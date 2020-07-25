@@ -2,6 +2,10 @@
 
 require("../modules/global.js");
 
+try {
+    require("fs").mkdirSync("./data");
+} catch (err) {}
+
 class Test {
     constructor(name) {
         this.name = name;

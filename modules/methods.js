@@ -12,18 +12,20 @@ class Methods {
     constructor() {} // Static
 
     static VerifyData(data) {
-        if (!data || !data.userid || !data.ip)
-            return 1; // Bad Data
-        else if (!Methods.VerifyIP.call(this, data.ip))
-            return 2; // Invalid Request Source
-        return 0;
+        return Number(!data || !data.userid);
     }
 
-    static VerifyIP(ip) {
-        return config.supportedIPs.indexOf(ip) > -1;
-    }
-
-    static VerifyPermission(userid, opcode = 0) {
+    static async VerifyPermission(userid, opcode = 2) {
+        if (config.keys[opcode] === 0)
+            return true; // No auth required.
+        if (!await Methods.VerifyRegistration(userid))
+            return false; // Opcodes 1 and 2 require registration
+        switch(config.keys[opcode]) {
+            case 1: return
+            case 2:
+            default: return false; // Shouldn't be reachable
+        }
+        // await Methods.VerifyRegistration(userid);
         return true;
         /* TODO Rewrite to use Database groups instead of config
         if (!Boolean(config.groups[userid]))
@@ -43,6 +45,11 @@ class Methods {
         }
 
         return errors === 0;
+    }
+
+    static async VerifyRegistration(userid) {
+        let reply = await Database.query("SELECT * FROM Users WHERE userid = ?", [userid]);
+        return reply && reply[0];
     }
 
     static VerifyScoreOwnership(userid, scoreData) {

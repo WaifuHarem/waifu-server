@@ -46,10 +46,7 @@ function listener(req, res) {
             console.log(data);
         }
 
-        let json = JSON.parse(data);
-        json["ip"] = req.remoteAddress.replace(/::ffff:/, ""); //Attach IP to Request obj
-
-        let task = new Task(Date.now(), data, {});
+        let task = new Task(Date.now(), JSON.parse(data), {});
         console.log(`task ${task.id} created`);
         task.then = reply => {
             res.writeHead(200, task.header);

@@ -3,7 +3,8 @@
   "description": "Server back-end for the waifu-bot. Part of the waifu project.",
   "version": "0.0.1",
   "dependencies": {
-    "mariadb": "latest"
+    "mariadb": "latest",
+    "node-gyp": "latest"
   },
   "engines": {
     "node": ">=12.0.0"

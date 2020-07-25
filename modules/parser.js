@@ -37,15 +37,30 @@ class Operations {
         // Add a parsed score to leaderboard table
     }
 
-    static FetchPlayerScores() {
+    static RemoveScore() {
+
+    }
+
+    static Fetch() {
         // TODO
         // Fetches top scores for a player. Can be all games or just 1
         // Can also specify a particular chart to get a players score
     }
 
-    static FetchSongLeaderboard() {
-        // TODO
-        // Fetches the leaderboards for an individual chart
+    static Session() {
+        //  TODO - Later implementation
+    }
+
+    static Multiplayer() {
+        // TODO - Later implementation
+    }
+
+    static Register(userid, username, profilelink) {
+
+    }
+
+    static Deregister(userid, ban = false) {
+
     }
 }
 
@@ -65,7 +80,12 @@ function receive(data) {
         let reply = null;
         switch(data.opcode) {
             case 1: reply = await Operations.AddScore(data.userid, data.data || null); break;
-
+            case 2: reply = await Operations.RemoveScore(); break;
+            case 3: reply = await Operations.Fetch(); break;
+            case 4: reply = await Operations.Session(); break;
+            case 5: reply = await Operations.Multiplayer(); break;
+            case 6: reply = await Operations.Register(); break;
+            case 7: reply = await Operations.Deregister(); break;
             default: reply = {code: 0};
         }
         return resolve(reply);

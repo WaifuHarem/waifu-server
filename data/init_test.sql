@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS FFR_Scores(
-  ID INTEGER PRIMARY KEY NOT NULL,
+  ScoreID TEXT PRIMARY KEY NOT NULL,
+  UserID INTEGER NOT NULL,
   Player TEXT NOT NULL,
   Title TEXT NOT NULL,
   Artist TEXT NOT NULL,
@@ -17,13 +18,18 @@ CREATE TABLE IF NOT EXISTS FFR_Scores(
   TimeAchieved TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS Users(
-    ID INTEGER PRIMARY KEY NOT NULL,
+    UserID INTEGER PRIMARY KEY NOT NULL,
     NameOsu TEXT,
+    ProfileOsu TEXT,
     NameEtterna TEXT,
+    ProfileEtterna TEXT,
     NameQuaver TEXT,
+    ProfileQuaver TEXT,
     NameFFR TEXT,
+    ProfileFFR TEXT,
     NameRobeats TEXT,
-    Group SMALLINT NOT NULL DEFAULT 1,
+    ProfileRobeats TEXT,
+    Group INT NOT NULL DEFAULT 1,
     Regdate TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     SessionHistory JSON NOT NULL DEFAULT {}
 );
