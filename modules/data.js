@@ -1,3 +1,9 @@
+
+// Data Module
+// Used to load scheme and data objects for usage in the methods class.
+// - Layla
+// v0.0.1
+
 "use strict";
 
 const path = require("path");

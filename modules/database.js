@@ -2,6 +2,7 @@
 // Database Module
 // Handles database queries and maintains a connection pool.
 // - Layla
+// v0.0.2
 
 "use strict";
 

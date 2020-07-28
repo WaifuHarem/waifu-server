@@ -1,3 +1,9 @@
+
+// Diff Wrapper
+// Used for binding Minacalc to javascript.
+// v0.0.0
+// Not ready for implementation
+
 #include <node.h>
 
 // TODO - #include <minacalc.h>

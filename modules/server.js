@@ -2,36 +2,13 @@
 // Server Module
 // Creates an HTTP server for a parent process and sends messages upward
 // - Layla
+// v0.0.2
 
 "use strict";
 
 require("./global.js");
+const { Task, tasks } = require("./task.js");
 const prod = Boolean(global.prod);
-
-// Task class, for keeping requests organized
-
-const tasks = new Map();
-
-class Task extends require("events") {
-    constructor(data) {
-        super();
-        this.id = Task.genCode(16);
-        this.data = data;
-        this.then = null;
-
-        setTimeout(() => {
-            this.emit("destroy");
-        }, 1000 * 60 * 5);
-    }
-
-    static genCode(t) {
-        const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let str = "";
-        while(str.length < t)
-            str += chars.charAt(Math.floor(Math.random() * chars.length));
-        return str;
-    }
-}
 
 // Setup Server
 

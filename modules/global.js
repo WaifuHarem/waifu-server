@@ -1,6 +1,7 @@
 
 // Global Setup
 // - Layla
+// v0.0.2
 
 "use strict";
 

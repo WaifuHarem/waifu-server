@@ -1,5 +1,11 @@
 # Waifu Server Request API
 
+v0.0.2
+
+Currently a work in progress.
+
+TODO: add entries for all opcodes
+
 ### Server Requests
 
 Waifu server operates with an HTTP server bound to localhost on listening for requests on port 8000. Requests must maintain the following schema as defined below:

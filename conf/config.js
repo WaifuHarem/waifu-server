@@ -2,10 +2,9 @@
 // Config Global Module
 // Holds global settings used across the server.
 // - Layla
+// v0.0.2
 
 "use strict";
-
-const fs = require("fs");
 
 const config = {
     watchconfig: true,

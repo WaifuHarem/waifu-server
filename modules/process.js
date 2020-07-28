@@ -1,6 +1,11 @@
+
+// Process Manager module
+// Used as a wrapper for subprocess io and task management
+// - Layla
+// v0.0.2
+
 "use strict";
 
-// Mini Process Manager. Mostly pointless but in place in the event the db is moved to a different process.
 const child_process = require("child_process");
 const processes = new Map();
 
@@ -17,17 +22,23 @@ class ProcessWrapper {
         }.bind(this));
     }
 
+    send(data) {
+        this.process.send(data);
+    }
+
     health() {
         // TODO - track concurrent and recent tasks
         return `Process Wrapper ${this.id}`
     }
 
     static Create(path, args, options, listener) {
-        processes.set(processes.size, new ProcessWrapper(
+        let pr = new ProcessWrapper(
             processes.size, // id - probably dumb
             child_process.fork(path, args, options), // process
             listener // receive method
-        ));
+        );
+        processes.set(processes.size, pr);
+        return pr;
     }
 }
 

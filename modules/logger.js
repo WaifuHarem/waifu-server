@@ -1,8 +1,14 @@
+
+// Logger Module
+// Used to manage crash, logs, and notifications of the server.
+// - Layla
+// v0.0.2
+
 "use strict";
 
 const fs = require("fs");
 
-/* // TODO - make this actually work
+/* // TODO - make this actually work - actually just integrate into a storage and memory manager
 if (fs.statSync(`./logs/${file}`).size / (1000 * 1000) >= 50)
 		console.log(`./logs/${file} has exceeded 50MBs, it will be cleared at 100MBs...`);
  */
