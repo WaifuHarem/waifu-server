@@ -9,7 +9,6 @@
 const child_process = require("child_process");
 const processes = new Map();
 
-// Process Wrapper - TODO add a server health query
 class ProcessWrapper {
     constructor(id, subProcess, receive) {
         this.id = id;
@@ -24,11 +23,6 @@ class ProcessWrapper {
 
     send(data) {
         this.process.send(data);
-    }
-
-    health() {
-        // TODO - track concurrent and recent tasks
-        return `Process Wrapper ${this.id}`
     }
 
     static Create(path, args, options, listener) {

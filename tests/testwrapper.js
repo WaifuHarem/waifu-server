@@ -13,7 +13,7 @@ class Test {
     }
 
     add(...args) {
-        this.tests.push(new Task(...args || [()=>{},{}]));
+        this.tests.push(new _Task(...args || [()=>{},{}]));
     }
 
     start() {
@@ -63,7 +63,7 @@ class Test {
     }
 }
 
-class Task extends require("events") {
+class _Task extends require("events") {
     constructor(func, context, ...args) {
         super();
         this.pass = false;
