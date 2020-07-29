@@ -11,19 +11,6 @@
 const Methods = require("./methods");
 //const Requests = require("./requests");
 
-// Error Codes - TODO put this somewhere else
-// 0 = No Error
-// 1 = Bad Request
-// 2 = Invalid Request Source
-// 3 = Unauthorized Request
-// 4 = Invalid Score
-
-// All Operations ABSOLUTELY must return a promise that resolves to an object containing:
-// {
-//      code: int
-//      data: json-string (optional)
-// }
-
 class Operations {
     constructor() {} // Static
 
@@ -64,11 +51,9 @@ class Operations {
             Crash(err, "Received data that cannot be processed.");
             return {code: err};
         });
-        // TODO
-        // Add a parsed score to leaderboard table
     }
 
-    static RemoveScore() {
+    static RemoveScore(userid, game, scorehash) {
 
     }
 
@@ -86,11 +71,11 @@ class Operations {
         // TODO - Later implementation
     }
 
-    static Register(userid, username, profilelink) {
+    static Register(userid, game, username, profilelink) {
 
     }
 
-    static Deregister(userid, ban = false) {
+    static Deregister(userid, game = 0, ban = false) {
 
     }
 }

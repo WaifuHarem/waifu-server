@@ -1,16 +1,18 @@
-Below is a quick runthrough of the way scoreData objects are expected to be structured.
-Any score that doesn't match will be rejected or quarantined.
+# ScoreData Schema
 
-Etterna
+The structure of ScoreData is dictated by gamecode due to different games featuring different data in their screenshots. When processing, be mindful to implement different behavior for each possible configuration of ScoreData, as detailed below.
 
--- TODO
+### Etterna
 
-osu!
+Awaiting implementation.
 
--- TODO
+### osu!mania
 
-FFR
+Awaiting implementation.
 
+### FlashFlashRevolution
+
+```
 {
     "game": 3, // Game Id for FFR scores
     "date": int, // Date on scorepost in Time-since-epoch format
@@ -28,3 +30,12 @@ FFR
     "equiv": float, // AAA Equivalency value
     "raw": float // Raw Goods value
 }
+```
+
+### Quaver
+
+Awaiting implementation.
+
+### RobeatsCS
+
+Awaiting implementation.

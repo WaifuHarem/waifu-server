@@ -110,3 +110,62 @@ Gamecodes are an integer that must be resolved from the name of the game being r
     5 = Robeats
 ```
 
+### Operation Specific Data Structures
+
+Certain operators expect certain data to be stored in the `data` member of the request object. These are detailed below.
+
+__AddScore:__
+
+```
+{
+    "game": gamecode,
+    "date": timestamp,
+    "player": username
+}
+```
+
+ScoreData schema varies on gamecode. See ScoreData.md for defintions and more information.
+
+__RemoveScore:__
+
+```
+{
+    "userid": targetuser,
+    "game": gamecode,
+    "scoreid": scoreid
+}
+```
+
+__Fetch:__
+
+```
+{
+    Awaiting Implementation
+}
+```
+
+__Register:__
+
+```
+{
+    "userid": targetuser,
+    "game": gamecode,
+    "username": ingame name,
+    "profilelink": game profile
+}
+```
+
+__Deregister:__
+
+```
+{
+    "userid": targetuser,
+    "game": gamecode or 0,
+    "ban": boolean
+}
+```
+
+__Keys Awaiting Implementation:__
+
+* Session
+* Multiplayer
