@@ -85,6 +85,12 @@ class Methods {
         return Methods.Crypto.createHash("sha256").update(scoreString).digest("base64");
     }
 
+    static async AddScore(query) {
+        let error = await Database.query(...query);
+        console.log(error); // Temporary log - remove me after testing is complete
+        return error;
+    }
+
     // v0.1.0
     static toId(string) {
         return String(string).toLowerCase().replace(/[^a-z0-9]+/g, '');

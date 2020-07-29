@@ -46,10 +46,14 @@ class Operations {
                 case 4: return reject(0); break;
                 case 5: return reject(0); break;
             }
-            // TODO initiate query
-        }).catch(function(err) {
-            Crash(err, "Received data that cannot be processed.");
-            return {code: err};
+            let err = await Methods.AddScore(query);
+            if (err) {
+                return reject(5);
+            }
+            resolve({code: 0});
+        }).catch(function(code) {
+            Crash(0, "Received data that cannot be processed.");
+            return {code};
         });
     }
 

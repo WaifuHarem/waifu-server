@@ -83,6 +83,7 @@ Response codes indicate the status of the server transaction, their meanings are
     2 = Invalid Request
     3 = Unauthorized Request
     4 = Invalid score
+    5 = Database Error
     // This list is still being made, subject to frequent additions
 ```
 
