@@ -11,6 +11,7 @@ if (process.argv.length >= 3) {
     switch(process.argv[2]) {
         case "prod": global.prod = true; break;
         case "test": require("../tests/testwrapper.js"); break;
+        case "chart": global.jobfile = process.argv[3]; break;
     }
 }
 
