@@ -4,17 +4,15 @@
 const { floor } = require ('mathjs'); 
 const { Chart, Timepoint } = require("../chart.js");
 
-// add tag of data you want, colon is required
-const metadataTags = ["Title:","TitleUnicode:","Artist:","ArtistUnicode:","Creator:","Version:","BeatmapID:","HPDrainRate:","OverallDifficulty:"];
-
-const osuChart = new Chart({});
+// add tag of data you want, no colon
+const metadataTags = ["Title","TitleUnicode","Artist","ArtistUnicode","Creator","Version","BeatmapID","HPDrainRate","OverallDifficulty"];
 
 let state = [0,0,0,0];
 let lnRelease = [];
 
 let lastTimepoint;
 
-function addNote(timepoint, column, type, releasepoint) {
+function addNote(timepoint, column, type, releasepoint, osuChart) {
 
     // adds LN release for in-between timepoint
     if (lnRelease.length != 0) {
@@ -76,18 +74,24 @@ function addNote(timepoint, column, type, releasepoint) {
 
 function loadData(mapdata) {
 
+    const osuChart = new Chart({});
+
     let foundMetadata = {};
     let readObj = false;
 
     const dataLine = mapdata.split("\r\n");
 
+    let noteValues, timePoint, column, type, releasePoint, tagName, index;
+
     for (const line of dataLine) {
         if (readObj == false) {
+
             // get metadata from tags
-            for (const tag of metadataTags) {
-                if (line.startsWith(tag)) {
-                    foundMetadata[tag.replace(":", "")] = line.replace(tag, "");
-                }
+            tagName = line.split(":")[0];
+            index = metadataTags.indexOf(tagName);
+
+            if (index > -1) {
+                foundMetadata[tagName] = line.replace(tagName+":", "");
             }
 
             if (line == "[HitObjects]") { 
@@ -97,18 +101,17 @@ function loadData(mapdata) {
 
         } else {
             
-            let noteValues = line.split(",");
+            noteValues = line.split(",");
 
-            let timePoint = parseInt(noteValues[2]);
-            let column = floor(noteValues[0]/128);
-            let type, releasePoint;
+            timePoint = parseInt(noteValues[2]);
+            column = floor(noteValues[0]/128);
 
             switch(noteValues[3]) {
                 case '1': case '5': type = 1; break;
                 case '128': type = 2; releasePoint = parseInt(noteValues[5]);
             }
             
-            addNote(timePoint, column, type, releasePoint);
+            addNote(timePoint, column, type, releasePoint, osuChart);
 
         }
 
