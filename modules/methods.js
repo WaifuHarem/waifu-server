@@ -23,7 +23,7 @@ class Methods {
     }
 
     // v0.1.0
-    static async VerifyPermission(userid, opcode = 2, override) {
+    static async VerifyPermission(userid, opcode, override) {
         let gate = override ? override : config.keys[opcode];
         if (gate === 0)
             return true; // No auth required.

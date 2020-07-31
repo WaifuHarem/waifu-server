@@ -1,4 +1,4 @@
 [
-  "DESCRIBE FFR_Scores;",
-  "DESCRIBE Users;"
+  ["DESCRIBE FFR_Scores;"],
+  ["DESCRIBE Users;"]
 ]

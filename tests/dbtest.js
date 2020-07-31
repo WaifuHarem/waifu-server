@@ -4,18 +4,18 @@
 
 "use strict";
 
-const database = require("../modules/database.js");
+require("../modules/database.js");
 
 const test = new Test("Database Test");
 test.add(function() {
     console.log(`ReadyState: ${this._ready}`);
     console.log(`Prodflag: ${this.prod}`);
     console.log(`Mode: ${this.mode}`);
-}, database);
-test.add(database.ready, {});
+}, Database);
+test.add(Database.ready, {});
 
-for (const i of require("./data/sqltests.json")) {
-    test.add(database.query, database, i);
+for (const [sql, values = null] of require("./data/sqltests.json")) {
+    test.add(Database.query, Database, sql, values);
 }
 
 test.start();
