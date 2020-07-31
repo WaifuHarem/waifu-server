@@ -50,7 +50,7 @@ class Operations {
             if (err) {
                 return reject(5);
             }
-            resolve({code: 0});
+            resolve({code: 0});z
         }).catch(function(code) {
             Crash(0, "Received data that cannot be processed.");
             return {code};

@@ -1,6 +1,7 @@
 "use strict";
 
 require("../modules/global.js");
+global.assert = require("assert");
 
 try {
     require("fs").mkdirSync("./data");
@@ -13,7 +14,9 @@ class Test {
     }
 
     add(...args) {
-        this.tests.push(new _Task(...args || [()=>{},{}]));
+        let task = new _Task(...args || [()=>{},{}]);
+        this.tests.push(task);
+        return task;
     }
 
     start() {
@@ -73,6 +76,7 @@ class _Task extends require("events") {
         this.context = context || this;
         this.args = args || [];
         this.error = "";
+        this.assertions = []
     }
 
     report() {
@@ -87,6 +91,9 @@ class _Task extends require("events") {
         try {
             // Use await to support promise functions
             ret = await this.ptr.call(this.context, ...this.args);
+            for (const [expr, ctx] of this.assertions) {
+                expr.call(ctx, ret);
+            }
             this.pass = true;
         } catch (err) {
             this.error = err;
@@ -96,6 +103,11 @@ class _Task extends require("events") {
             this.finished = true;
             this.emit("done");
         }
+    }
+
+    assert(expr, ctx = this) {
+        this.assertions.push([expr, ctx]);
+        return this;
     }
 
     log() {
