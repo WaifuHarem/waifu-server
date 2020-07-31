@@ -73,6 +73,7 @@ function addNote(timepoint, column, type, releasepoint, osuChart) {
 
 
 function loadData(mapdata) {
+    if (!mapdata) return null;
 
     const osuChart = new Chart({});
 
