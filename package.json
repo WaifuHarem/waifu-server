@@ -16,6 +16,7 @@
     "production": "node main.js prod",
     "update": "bash ./scripts/update.sh",
 
+    "testall": "node ./testrun.js test",
     "servertest": "node ./tests/servertest.js test",
     "dbtest": "node ./tests/dbtest.js test",
     "parsertest": "node ./tests/parsertest.js test",
