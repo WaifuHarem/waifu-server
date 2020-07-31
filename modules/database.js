@@ -18,14 +18,18 @@ class Database {
         const mariadb = require("mariadb");
         this.pool = mariadb.createPool(config.connection[Number(prod)]);
 
+        this.init();
+    }
+
+    init() {
         // Database init
-        if (!require("fs").existsSync(`./${this.mode}dbready`)) {
+        if (!require("fs").existsSync(`../conf /${this.mode}dbready`)) {
             (async (sql) => {
                 let connection;
                 try {
                     connection = await this.pool.getConnection();
                     await connection.query(sql);
-                    require("fs").writeFileSync(`./${this.mode}dbready`, "");
+                    require("fs").writeFileSync(`../conf/${this.mode}dbready`, "");
                     this._ready = true;
                 } catch (e) {
                     if (connection)

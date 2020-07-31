@@ -11,6 +11,7 @@ class Test {
     constructor(name) {
         this.name = name;
         this.tests = [];
+        this.kill = true;
     }
 
     add(...args) {
@@ -19,7 +20,9 @@ class Test {
         return task;
     }
 
-    start() {
+    start(keepalive) {
+        if (keepalive)
+            this.kill = false;
         console.log(`Starting test for "${this.name}"`);
         let finished = 0;
         for (let i = 0; i < this.tests.length; i++) {
@@ -43,7 +46,8 @@ class Test {
         }
         console.log(`Total errors: ${errors}`);
         this.log(errors);
-        process.exit(0);
+        if (this.kill)
+            process.exit(errors !== 0 ? 1 : 0);
     }
 
     log(errors) {
@@ -63,6 +67,12 @@ class Test {
         file += "End of Test Report";
         let path = require("path").resolve("../", config.testlogs, `${this.name}_${time}.log`);
         require("fs").writeFileSync(path, file);
+    }
+
+    reset(name) {
+        this.name = name;
+        this.tests = [];
+        this.kill = true;
     }
 }
 

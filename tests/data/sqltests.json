@@ -1,4 +1,5 @@
 [
   ["DESCRIBE FFR_Scores;"],
-  ["DESCRIBE Users;"]
+  ["DESCRIBE Users;"],
+  ["INSERT INTO Users(UserID, NameEtterna, ProfileEtterna, Group) VALUES(?, ?, ?, ?)", ["223180420114546690", "Lights", "https://etternaonline.com/user/Lights", 2]]
 ]
