@@ -16,7 +16,7 @@ module.exports = {
 		"prod": true,
 		"Test": true
 	},
-	"ignorePatterns": ["./modules/requests.js"],
+	"ignorePatterns": ["requests.js"],
 	"rules": {
 		"indent": [
 			"error",
