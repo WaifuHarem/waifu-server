@@ -7,6 +7,15 @@ module.exports = {
 	"parserOptions": {
 		"ecmaVersion": 11
 	},
+	"globals": {
+		"Crash": true,
+		"Log": true,
+		"pLog": true,
+		"config": true,
+		"loaded": true,
+		"prod": true,
+		"Test": true
+	},
 	"rules": {
 		"indent": [
 			"error",

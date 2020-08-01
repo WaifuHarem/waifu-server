@@ -96,4 +96,4 @@ class Database {
 	}
 }
 
-global.Database = new Database();
+module.exports = new Database();

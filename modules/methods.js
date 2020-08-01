@@ -6,7 +6,7 @@
 
 "use strict";
 
-require("./database.js");
+const Database = require("./database.js");
 const Data = require("./data");
 
 class Methods {

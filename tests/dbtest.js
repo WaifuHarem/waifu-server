@@ -4,7 +4,7 @@
 
 "use strict";
 
-require("../modules/database.js");
+const Database = require("../modules/database.js");
 
 const test = new Test("Database Base Test");
 test.add(function() {
