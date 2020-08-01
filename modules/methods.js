@@ -9,12 +9,10 @@
 const Database = require("./database.js");
 const Data = require("./data");
 const Crypto = require("crypto");
+const GameNames = [null, "Etterna", "osu!mania", "FFR", "Quaver", "Robeats"];
 
 class Methods {
     constructor() {} // Static
-
-    // v0.1.0
-    static GameNames = [null, "Etterna", "osu!mania", "FFR", "Quaver", "Robeats"];
 
     // v0.1.0
     static VerifyData(data) {
@@ -70,7 +68,7 @@ class Methods {
 
     // v0.1.0
     static HashScore(scoreData) {
-        const game = Methods.GameNames[scoreData.game];
+        const game = GameNames[scoreData.game];
         const title = Methods.toId(scoreData.title);
         const artist = Methods.toId(scoreData.artist);
         const creator = Methods.toId(game === "Etterna" ? scoreData.packname : scoreData.creator);
