@@ -7,6 +7,10 @@
     "node-gyp": "latest",
     "unrar": "latest"
   },
+  "devDependencies": {
+    "eslint": "latest",
+    "chalk": "latest"
+  },
   "engines": {
     "node": ">=12.0.0"
   },
@@ -27,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/Lights-private/waifu-server/src/master/"
+    "url": "https://github.com/WaifuHarem/waifu-server"
   },
   "author": {
     "name": "Layla A"
@@ -35,7 +39,7 @@
   "private": true,
   "license": "MIT",
   "maintainers": ["Lights"],
-  "contributors": ["Lights"],
+  "contributors": ["Lights", "tgnehs"],
   "readme": "README.md",
   "engineStrict": true,
   "os": ["linux"]
