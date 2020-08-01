@@ -8,11 +8,10 @@
 
 const Database = require("./database.js");
 const Data = require("./data");
+const Crypto = require("crypto");
 
 class Methods {
     constructor() {} // Static
-
-    static Crypto = require("crypto");
 
     // v0.1.0
     static GameNames = [null, "Etterna", "osu!mania", "FFR", "Quaver", "Robeats"];
@@ -82,7 +81,7 @@ class Methods {
 
     // v0.1.0
     static HashScoreString(scoreString) {
-        return Methods.Crypto.createHash("sha256").update(scoreString).digest("base64");
+        return Crypto.createHash("sha256").update(scoreString).digest("base64");
     }
 
     static async AddScore(query) {

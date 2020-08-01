@@ -3,10 +3,6 @@
 require("../modules/global.js");
 global.assert = require("assert");
 
-try {
-	require("fs").mkdirSync("./data");
-} catch (err) {}
-
 class Test {
 	constructor(name) {
 		this.name = name;

@@ -85,7 +85,7 @@ class Database {
 					return resolve(null);
 				connection = await this.pool.getConnection();
 				resolve(await connection.query(...values ? [ sql, values ] : [ sql ]));
-			}
+			};
 
 			wrapper(resolve, sql, values);
 		}).catch(err => {
