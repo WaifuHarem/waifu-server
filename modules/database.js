@@ -79,11 +79,15 @@ class Database {
 
 	query(sql, values = null) {
 		let connection;
-		return new Promise(async (resolve) => {
-			if (!await this.ready())
-				return null;
-			connection = await this.pool.getConnection();
-			resolve(await connection.query(...values ? [ sql, values ] : [ sql ]));
+		return new Promise(resolve => {
+			const wrapper = async (resolve, sql, values) => {
+				if (!await this.ready())
+					return resolve(null);
+				connection = await this.pool.getConnection();
+				resolve(await connection.query(...values ? [ sql, values ] : [ sql ]));
+			}
+
+			wrapper(resolve, sql, values);
 		}).catch(err => {
 			Crash("Mysql Err", err);
 			connection.destroy();

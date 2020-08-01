@@ -2,7 +2,7 @@
 "use strict";
 
 const { floor } = require ("mathjs"); 
-const { Chart, Timepoint } = require("../chart.js");
+const { Chart } = require("../chart.js");
 
 // add tag of data you want, no colon
 const metadataTags = ["Title","TitleUnicode","Artist","ArtistUnicode","Creator","Version","BeatmapID","HPDrainRate","OverallDifficulty"];
