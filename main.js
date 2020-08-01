@@ -10,8 +10,8 @@
 require("./modules/global.js");
 // TODO - split requests client into a subprocess
 require("./modules/process.js").Create(
-    "./modules/server",
-    [],
-    {cwd: __dirname},
-    require("./modules/parser.js").bind(this)
+	"./modules/server",
+	[],
+	{cwd: __dirname},
+	require("./modules/parser.js").bind(this)
 );
