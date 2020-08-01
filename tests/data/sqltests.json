@@ -1,5 +1,6 @@
 [
   ["DESCRIBE FFR_Scores;"],
   ["DESCRIBE Users;"],
-  ["INSERT INTO Users(UserID, NameEtterna, ProfileEtterna, Group) VALUES(?, ?, ?, ?)", ["223180420114546690", "Lights", "https://etternaonline.com/user/Lights", 2]]
+  ["INSERT INTO Users(UserID, NameEtterna, ProfileEtterna, Group) VALUES(?, ?, ?, ?)", ["223180420114546690", "Lights", "https://etternaonline.com/user/Lights", 2]],
+  ["INSERT INTO FFR_Scores(UserID, SongHash, Quarantine, Player, Title, Artist, Creator, W0, W1, W2, W3, W4, W5, Equiv, Raw, TimeAchieved) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",["223180420114546690", "", 0, "Lights","string","string","string",3,1,1,1,1,1,1,1,1,1]]
 ]

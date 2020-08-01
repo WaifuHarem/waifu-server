@@ -98,7 +98,8 @@ class _Task extends require("events") {
 			// Use await to support promise functions
 			ret = await this.ptr.call(this.context, ...this.args);
 			for (const [expr, ctx] of this.assertions) {
-				expr.call(ctx, ret);
+				if (!expr.call(ctx, ret))
+					throw Error(`Assertion '${expr}' failed with input ${ret}`);
 			}
 			this.pass = true;
 		} catch (err) {
