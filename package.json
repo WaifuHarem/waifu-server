@@ -8,8 +8,8 @@
     "unrar": "latest"
   },
   "devDependencies": {
-    "eslint": "latest",
-    "chalk": "latest"
+    "chalk": "latest",
+    "eslint": "^7.6.0"
   },
   "engines": {
     "node": ">=12.0.0"
@@ -19,14 +19,12 @@
     "start": "node main.js",
     "production": "node main.js prod",
     "update": "bash ./scripts/update.sh",
-
     "testall": "node ./testrun.js test",
     "servertest": "node ./tests/servertest.js test",
     "dbtest": "node ./tests/dbtest.js test",
     "parsertest": "node ./tests/parsertest.js test",
     "methodstest": "node ./tests/methodstest.js test",
     "testwrapper": "node ./tests/testwrapper.js test",
-
     "chartparser": "node ./modules/chartparser.js chart ./cfg/jobfile.json"
   },
   "repository": {
@@ -38,9 +36,16 @@
   },
   "private": true,
   "license": "MIT",
-  "maintainers": ["Lights"],
-  "contributors": ["Lights", "tgnehs"],
+  "maintainers": [
+    "Lights"
+  ],
+  "contributors": [
+    "Lights",
+    "tgnehs"
+  ],
   "readme": "README.md",
   "engineStrict": true,
-  "os": ["linux"]
+  "os": [
+    "linux"
+  ]
 }
