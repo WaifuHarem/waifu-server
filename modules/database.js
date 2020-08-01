@@ -23,7 +23,7 @@ class Database {
 
 	init() {
 		// Database init
-		if (!require("fs").existsSync(`../conf /${this.mode}dbready`)) {
+		if (!require("fs").existsSync(`../conf/${this.mode}dbready`)) {
 			(async (sql) => {
 				let connection;
 				try {
