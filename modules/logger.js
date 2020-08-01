@@ -13,25 +13,42 @@ if (fs.statSync(`./logs/${file}`).size / (1000 * 1000) >= 50)
 		console.log(`./logs/${file} has exceeded 50MBs, it will be cleared at 100MBs...`);
  */
 
+console.log("Initiating logger...");
+
 try {
 	fs.mkdirSync("./logs");
-} catch (err) {}
+	console.log("./logs created");
+} catch (err) {
+	console.log("Found ./logs");
+}
 
 try {
 	fs.mkdirSync("./logs/tests");
-} catch (err) {}
+	console.log("./logs/tests created");
+} catch (err) {
+	console.log("Found ./logs/tests");
+}
 
 try {
 	fs.writeFileSync("./logs/crash.log", "");
-} catch (err) {}
+	console.log("./logs/crash.log created");
+} catch (err) {
+	console.log("Found ./logs/crash.log");
+}
 
 try {
 	fs.writeFileSync("./logs/process.log", "");
-} catch (err) {}
+	console.log("./logs/process.log created");
+} catch (err) {
+	console.log("Found ./logs/process.log");
+}
 
 try {
 	fs.writeFileSync("./logs/console.log", "");
-} catch (err) {}
+	console.log("./logs/console.log created");
+} catch (err) {
+	console.log("Found ./logs/console.log");
+}
 
 function log(msg, write = false, notify = false) {
 	let now = Date();
