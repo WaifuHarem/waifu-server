@@ -97,7 +97,7 @@ function receive(data) {
 			if (!data.opcode)
 				return resolve({code: 0}); // No-op
 
-			if (await !Methods.VerifyPermission.call(this, data.userid, data.opcode, data.auth || 0))
+			if (await !Methods.VerifyPermission(data.userid, data.opcode, data.auth || 0))
 				return resolve({code: 3}); // Unauthorized Request
 
 			let reply = null;
