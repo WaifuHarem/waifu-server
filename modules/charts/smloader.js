@@ -1,10 +1,15 @@
 
+// Timing error caused by BPM changes where notes are not present (approx 2 ms per change )
+// Likely impossible to fix unless completely rewrite formula
+// This error does not affect distance/timing between notes
+
 "use strict";
 
 const { Chart } = require("../chart.js");
 
 // add tag of data you want, no colon or hashtag
 const metadataTags = ["TITLE","TITLETRANSLIT","ARTIST","ARTISTTRANSLIT","SUBTITLE","SUBTITLETRANSLIT"];
+const timingTags = ["OFFSET","BPMS","STOPS"];
 
 function parseDifficulty(difficulty, steps, notes, md, timedata, smChartArray) {
     
@@ -22,20 +27,38 @@ function parseDifficulty(difficulty, steps, notes, md, timedata, smChartArray) {
     });
 
     let offset = timedata.offset;
+    let bpms = timedata.bpms;
+    let stops = timedata.stops
+    let beatNum = 0;
     let noteTime;
-    
+
     rawNotes.forEach(function(measure) {
         if (!measure) { return; }
 
-        // note time = (measure length in ms) / # of states in measure
-        noteTime = (60000 / timedata.bpm * 4) / measure.length;
+        // adjust offset based on stops, note length (bpm), and add states
         measure.forEach(function(note) {
+
+            if (stops.length > 0) {
+                if (parseFloat(beatNum.toFixed(5)) >= stops[0][0]) {
+                    offset += stops[0][1] * 1000;
+                    stops.shift();
+                }
+            }
+
+            if (bpms.length > 1) {
+                if (parseFloat(beatNum.toFixed(8)) >= bpms[1][0]) {
+                    bpms.shift();
+                }
+                noteTime = (60000 / bpms[0][1] * 4) / measure.length;
+            }
+
             if (note != "0000") {
                 smChartArray[smChartArray.length-1].AddPoint(offset, note);
             }
+            
+            offset += noteTime;
+            beatNum += 4/measure.length;
         });
-
-        offset += noteTime;
     })
 
 };
@@ -72,12 +95,25 @@ function loadData(mapString) {
             metadata[fieldName] = field[1];
         } else 
         
-        if (fieldName == "OFFSET" || fieldName == "BPMS") {
-            if (fieldName == "OFFSET") {
-                timedata.offset = parseFloat(field[1]) * -1000; //secs to ms
-            } else {
-                timedata.bpm = field[1].match(/0\.000=\d*\.\d*/); //only get first bpm
-                timedata.bpm = parseFloat(timedata.bpm[0].replace("0.000=", ''));
+        if (timingTags.indexOf(fieldName) > -1) {
+            switch(fieldName) {
+                case "OFFSET":
+                    timedata.offset = parseFloat(field[1]) * -1000; //secs to ms
+                    break;
+                case "BPMS":
+                    timedata.bpms = field[1].split(',').map(function(str) {
+                        return str.split('=').map(function(flt) {
+                            return parseFloat(flt);
+                        })
+                    })
+                    break;
+                case "STOPS":
+                    timedata.stops = field[1].split(',').map(function(str) {
+                        return str.split('=').map(function(flt) {
+                            return parseFloat(flt);
+                        })
+                    })
+                    break;
             }
         } else
 

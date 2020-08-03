@@ -1,128 +1,125 @@
 
-// Timing error caused by BPM changes where notes are not present (approx 2 ms per change )
-// Likely impossible to fix unless completely rewrite formula
-// This error does not affect distance/timing between notes
-
 "use strict";
 
+const { floor } = require ("mathjs"); 
 const { Chart } = require("../chart.js");
 
-// add tag of data you want, no colon or hashtag
-const metadataTags = ["TITLE","TITLETRANSLIT","ARTIST","ARTISTTRANSLIT","SUBTITLE","SUBTITLETRANSLIT"];
-const timingTags = ["OFFSET","BPMS","STOPS"];
+// add tag of data you want, no colon
+const metadataTags = ["Title","TitleUnicode","Artist","ArtistUnicode","Creator","Version","BeatmapID","HPDrainRate","OverallDifficulty"];
 
-function parseDifficulty(difficulty, steps, notes, md, timedata, smChartArray) {
-    
-    // implemented rolls (4) or roll release (5) not implemented
-    // mines are (6), as per Light's request
-    // metadata.VERSION can be changed to match formatting
+let state = [0,0,0,0];
+let lnRelease = [];
 
-    let metadata = md;
-    metadata.VERSION = difficulty+" "+steps;
-    smChartArray.push(new Chart(metadata));
+let lastTimepoint;
 
-    // fixes mines, measure arrays, containing states
-    let rawNotes = notes.replace(/M/g, '6').split(',').map(function(measure) {
-        return measure.match(/.{1,4}/g);
-    });
+function addNote(timepoint, column, type, releasepoint, osuChart) {
 
-    let offset = timedata.offset;
-    let bpms = timedata.bpms;
-    let stops = timedata.stops
-    let beatNum = 0;
-    let noteTime;
+	// adds LN release for in-between timepoint
+	if (lnRelease.length != 0) {
 
-    rawNotes.forEach(function(measure) {
-        if (!measure) { return; }
-
-        // adjust offset based on stops, note length (bpm), and add states
-        measure.forEach(function(note) {
-
-            if (stops.length > 0) {
-                if (parseFloat(beatNum.toFixed(5)) >= stops[0][0]) {
-                    offset += stops[0][1] * 1000;
-                    stops.shift();
-                }
-            }
-
-            if (bpms.length > 1) {
-                if (parseFloat(beatNum.toFixed(8)) >= bpms[1][0]) {
-                    bpms.shift();
-                }
-                noteTime = (60000 / bpms[0][1] * 4) / measure.length;
-            }
-
-            if (note != "0000") {
-                smChartArray[smChartArray.length-1].AddPoint(offset, note);
-            }
-            
-            offset += noteTime;
-            beatNum += 4/measure.length;
-        });
-    })
-
-};
-
-function loadData(mapString) {
-    if (!mapString) return null;
-
-    const smChartArray = [];
-
-    // splits the string into arrays with metadata and difficulty data
-    let mapData = mapString
-        .replace(/(\/\*([\s\S]*?)\*\/)|(\/\/(.*)$)/gm, '') //removes /* and //---
-        .replace(/[\r\n\t]/g, '') //removes line breaks
-        .split(';')
-        .map(function(field) {
-            return field.split(':');
-        });
-
-    let wsRemoved = mapData[20].map(value => {
-        // couldn't find a better way to remove whitespace from #NOTES but not anything else
-        return value.replace(/\s/g, '');
-    });
-
-    mapData[20] = wsRemoved;
-    
-    let metadata = {};
-    let timedata = {};
-    let fieldName;
-
-    mapData.forEach(function(field) {
-        fieldName = field[0].slice(1);
-
-        if (metadataTags.indexOf(fieldName) > -1) {
-            metadata[fieldName] = field[1];
-        } else 
+		// sorts smallest to greatest timepoint
+		lnRelease = lnRelease.sort(function (a, b) { return a[1] - b[1]; }); 
         
-        if (timingTags.indexOf(fieldName) > -1) {
-            switch(fieldName) {
-                case "OFFSET":
-                    timedata.offset = parseFloat(field[1]) * -1000; //secs to ms
-                    break;
-                case "BPMS":
-                    timedata.bpms = field[1].split(',').map(function(str) {
-                        return str.split('=').map(function(flt) {
-                            return parseFloat(flt);
-                        })
-                    })
-                    break;
-                case "STOPS":
-                    timedata.stops = field[1].split(',').map(function(str) {
-                        return str.split('=').map(function(flt) {
-                            return parseFloat(flt);
-                        })
-                    })
-                    break;
-            }
-        } else
+		let firstLN = lnRelease[0];
 
-        if (fieldName == "NOTES" && field[1] == "dance-single") {
-            parseDifficulty(field[3], field[4], field[6], metadata, timedata, smChartArray);
-        }
-    });
+		// while the earliest LN value is between timepoints, continue adding points
+		while(firstLN[1] >= lastTimepoint && firstLN[1] < timepoint) {
 
-    return smChartArray;
+			if (firstLN[1] != lastTimepoint ) {
+				osuChart.AddPoint(lastTimepoint, state.join(""));
+				state = [0,0,0,0];
+			}
+
+			state[firstLN[0]] = 3;
+			lastTimepoint = firstLN[1];
+			lnRelease.shift();   
+			firstLN = lnRelease[0];
+            
+			if (!lnRelease[0]) {
+				break;
+			}
+		}
+	}
+
+	// submits last state and clears if new timepoint
+	if (timepoint != lastTimepoint) {
+		if (lastTimepoint) {
+			osuChart.AddPoint(lastTimepoint, state.join(""));
+		}
+		state = [0,0,0,0];
+	}
+
+	// change column state to note type 
+	state[column] = type;
+
+	// change column state for LN release on this timepoint
+	for (let i = 0; i < lnRelease.length; i++) {
+		if (lnRelease[i][1] == timepoint) {
+			state[lnRelease[i][0]] = 3;
+			lnRelease.splice(i, 1);
+            
+		}
+        
+	}
+
+	// adds release time for new LN column
+	if (releasepoint) {
+		lnRelease.push([column, releasepoint]);
+	}
+
+	// saves last timing point
+	lastTimepoint = timepoint;
 }
+
+
+function loadData(mapdata) {
+	if (!mapdata) return null;
+
+	const osuChart = new Chart({});
+
+	let foundMetadata = {};
+	let readObj = false;
+
+	const dataLine = mapdata.split("\r\n");
+
+	let noteValues, timePoint, column, type, releasePoint, tagName, index;
+
+	for (const line of dataLine) {
+		if (readObj == false) {
+
+			// get metadata from tags
+			tagName = line.split(":")[0];
+			index = metadataTags.indexOf(tagName);
+
+			if (index > -1) {
+				foundMetadata[tagName] = line.replace(tagName+":", "");
+			}
+
+			if (line == "[HitObjects]") { 
+				osuChart.metadata = foundMetadata;
+				readObj = true; 
+			}
+
+		} else {
+            
+			noteValues = line.split(",");
+
+			timePoint = parseInt(noteValues[2]);
+			column = floor(noteValues[0]/128);
+
+			switch(noteValues[3]) {
+			case "1": case "5": type = 1; break;
+			case "128": type = 2; releasePoint = parseInt(noteValues[5]);
+			}
+            
+			addNote(timePoint, column, type, releasePoint, osuChart);
+
+		}
+
+	}
+
+	return osuChart;
+}
+
 
 module.exports = loadData;
