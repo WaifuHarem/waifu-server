@@ -24,7 +24,6 @@ function processNotes(data) {
 }
 
 function addNote(timepoint, column, type, releasepoint, quaChart) {
-
 	// this works the same way as osuloader.js, comments there
 	if (lnRelease.length != 0) {
 
@@ -102,11 +101,11 @@ function loadData(chartData) {
 
 	for (const note of objectInfo) {
 		type = note.length == 2 ? 1 : 2;
-
-		addNote(note[0], note[1]-1, type, note[2], quaChart);
-
-	}
-
+        addNote(note[0], note[1]-1, type, note[2], quaChart);
+    }
+    
+    // this lets addNote run an extra time so that lns can be added
+    addNote(objectInfo[objectInfo.length-1]+1, 0, 2, null, quaChart);
 	quaChart.metadata = foundMetadata;
 	return quaChart;
 }
