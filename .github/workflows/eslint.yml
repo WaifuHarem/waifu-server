@@ -18,6 +18,4 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Lint + Fix with eslint
-      uses: getsentry/action-eslint-fix@v1
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: npx eslint ./ --fix
