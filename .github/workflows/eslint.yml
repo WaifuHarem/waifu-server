@@ -17,7 +17,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Linter
-          uses: getsentry/action-eslint-fix@v1
-          with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: getsentry/action-eslint-fix@v1
+    - name: Lint + Fix with eslint
+      with:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
