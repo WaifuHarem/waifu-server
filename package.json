@@ -12,18 +12,18 @@
     "eslint": "^7.6.0"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=14.0.0"
   },
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
     "production": "node main.js prod",
     "update": "bash ./scripts/update.sh",
-    "testall": "node ./testrun.js test",
+    "test": "node ./testrun.js test",
     "servertest": "node ./tests/servertest.js test",
     "dbtest": "node ./tests/dbtest.js test",
     "parsertest": "node ./tests/parsertest.js test",
-    "methodstest": "node ./tests/methodstest.js test",
+    "methodtest": "node ./tests/methodtest.js test",
     "testwrapper": "node ./tests/testwrapper.js test",
     "chartparser": "node ./modules/chartparser.js chart ./cfg/jobfile.json"
   },

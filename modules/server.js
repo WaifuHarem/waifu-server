@@ -9,6 +9,8 @@
 require("./global.js");
 const { Task, tasks } = require("./task.js");
 const prod = Boolean(global.prod);
+if (!process.send)
+	process.send = function(){}; // In case we aren't a subprocess
 
 // Setup Server
 

@@ -9,5 +9,5 @@ let test = "true";
 // Improperly linted
 
 function testfun() {
-        test = 'true'
+	test = "true";
 }

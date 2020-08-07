@@ -33,8 +33,8 @@ class Test {
 
 	resolve() {
 		console.log(`Concluded test for "${this.name}"`);
-		let res;
-		let errors = 0;
+		let res,
+			errors = 0;
 		for (let i = 0; i < this.tests.length; i++) {
 			res = this.tests[i].report();
 			errors += Number(!res[0]);
@@ -47,9 +47,10 @@ class Test {
 	}
 
 	log(errors) {
-		let time = new Date().toUTCString();
-		let file = `Test Report of "${this.name}"\n\nTest Summary:\n\tTime: ${time}\n\t${!errors ? "Passed" : `Failed\n\tTotal errors: ${errors}`}\n\tTotal tests conducted: ${this.tests.length}\n\nTest Results:\n`;
-		let data;
+		let data,
+			time = new Date(),
+			file = `Test Report of "${this.name}"\n\nTest Summary:\n\tTime: ${time.toUTCString()}\n\t${!errors ? "Passed" : `Failed\n\tTotal errors: ${errors}`}\n\tTotal tests conducted: ${this.tests.length}\n\nTest Results:\n`;
+
 		for (let i = 0; i < this.tests.length; i++) {
 			data = this.tests[i].log();
 			file += `Test ${i + 1}:\n\t${data.pass ? "Passed" : "Failed"}\n\t`;
@@ -61,8 +62,7 @@ class Test {
 			file += `Function: ${data.ptr}\n\tContext: ${data.context}\n\tArgs: ${data.args}\n\n`;
 		}
 		file += "End of Test Report";
-		let path = require("path").resolve("../", config.testlogs, `${this.name}_${time}.log`);
-		require("fs").writeFileSync(path, file);
+		require("fs").writeFileSync(`${config.testlogs}${this.name}_${time.getMilliseconds()}.log`.replace(" ", "_"), file);
 	}
 
 	reset(name) {
@@ -92,7 +92,7 @@ class _Task extends require("events") {
 	}
 
 	async run(index = 0) {
-		console.log(`Running Test ${index + 1} with:\n\tfunc ptr: ${this.func}\n\tctx: ${this.ctx}\n\targs: ${this.args}\n`);
+		console.log(`Running Test ${index + 1} with:\n\tfunc ptr: ${this.ptr}\n\tctx: ${this.context}\n\targs: ${this.args}\n`);
 		let ret;
 		try {
 			// Use await to support promise functions
@@ -131,8 +131,8 @@ class _Task extends require("events") {
 
 if (require.main === module) {
 	const test = new Test("Test Wrapper");
-	test.add(Crash, {}, "non-notif crash", new Error().stack, false);
-	test.add(Crash, {}, "notif crash", new Error().stack, true);
+	test.add(Crash, {}, "No-Notification Test Crash", new Error().stack, false);
+	test.add(Crash, {}, "Notification Test Crash", new Error().stack, true);
 	test.add(Log, {}, "testlog-nonwritten");
 	test.add(Log, {}, "testlog-written", true);
 	// TODO Test pLog

@@ -32,7 +32,7 @@ if (config.watchconfig) {
 		try {
 			delete require.cache[configPath];
 			global.config = require(configPath);
-			console.log("Reloaded login server settings");
+			console.log("Reloaded config.js");
 		} catch (e) {
 			console.error("Error reloading server settings. config.watchconfig disabled until restart");
 			console.error(e.stack);

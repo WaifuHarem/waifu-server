@@ -23,10 +23,10 @@ try {
 }
 
 try {
-	fs.mkdirSync("./logs/tests");
-	console.log("./logs/tests created");
+	fs.mkdirSync("./tests/reports");
+	console.log("./tests/reports created");
 } catch (err) {
-	console.log("Found ./logs/tests");
+	console.log("Found ./tests/reports");
 }
 
 try {
@@ -67,7 +67,7 @@ function plog(input, output, consoleout = false) {
 	fs.writeFileSync("./logs/process.log", msg,{encoding: "utf8", flag: "a"});
 }
 
-function crash(err, msg = false, notify = false, fatal = false) {
+function crash(msg, err = false, notify = false, fatal = false) {
 	let now = Date(),
 		stack = err.stack || err;
 	let output = `[Server Crash] - ${now}\n\n${msg ? `Error Message: ${msg + "\n\n"}` : ""}Stacktrace:\n${stack}\n\n${notify ? "Administrator Notification Sent.\n" :""}${fatal ? "Fatal Error, Closing server...\n" : ""}`;

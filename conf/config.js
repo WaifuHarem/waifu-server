@@ -6,6 +6,9 @@
 
 "use strict";
 
+const fs = require("fs");
+const loaddb = fs.existsSync("./conf/dbtest.json") || fs.existsSync("./conf/dbprod.json");
+
 const config = {
 	watchconfig: true,
 	keys: [
@@ -30,8 +33,10 @@ const config = {
 		}
 	],
 	supportedIPs: ["localhost"],
-	connection: [require("./dbtest.json"), require("./dbprod.json")],
-	testlogs: "waifu-server/logs/tests/"
+	connection: loaddb && fs.existsSync("./conf/dbprod.json") ?
+		require("./conf/dbprod.json") : loaddb && fs.existsSync("./conf/dbtest.json") ?
+			require("./conf/dbtest.json") : {dead: true},
+	testlogs: "./tests/reports/"
 };
 
 module.exports = config;

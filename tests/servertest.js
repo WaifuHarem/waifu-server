@@ -13,22 +13,22 @@ test.add(function() {
 	return new Promise((resolve) => {
 		const req = new (require("events"))();
 		const res = new function() {
-			this.writeHead = function(){
+			this.writeHead = function() {
 				console.log("writeHead called");
 			};
-			this.end = function(){
+			this.end = function() {
 				console.log("end called");
 			};
 		};
 		listener(req, res);
-		req.emit("data", "{\"test\": true }");
+		req.emit("data", "{ \"test\": true }");
 		setTimeout(() => {
 			let task = tasks.values().next().value;
 			task.on("destroy", () => {
 				console.log("destroy called");
 				resolve("omgyay");
 			});
-			task.then("{\"data\": {}}");
+			task.then("{ \"data\": {} }");
 		}, 250);
 		setTimeout(() => {
 			throw "failure";

@@ -11,6 +11,10 @@ if (!global.loaded)
 
 class Database {
 	constructor() {
+	    if (config.connection.dead) {
+            console.log("Cannot open database module in current environment.");
+            process.exit(0);
+        }
 		this._ready = false;
 		this.prod = Boolean(global.prod);
 		this.mode = this.prod ? "prod" : "test";

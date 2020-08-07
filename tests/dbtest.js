@@ -11,7 +11,8 @@ test.add(function() {
 	console.log(`ReadyState: ${this._ready}`);
 	console.log(`Prodflag: ${this.prod}`);
 	console.log(`Mode: ${this.mode}`);
-}, Database);
+	return this.prod;
+}, Database).assert(val => {return val === false;});
 test.add(Database.ready, Database);
 
 const tables = ["FFR_Scores", "Users"];
